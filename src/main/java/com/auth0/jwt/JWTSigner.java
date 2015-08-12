@@ -118,15 +118,17 @@ public class JWTSigner {
     }
 
     private void processPayloadOptions(Map<String, Object> claims, Options options) {
-        long now = System.currentTimeMillis() / 1000l;
+        if (options.isJwtId())
+            claims.put("jti", UUID.randomUUID().toString());
+
+        long now = Math.round(System.currentTimeMillis() / 1000d);
+
         if (options.expirySeconds != null)
             claims.put("exp", now + options.expirySeconds);
         if (options.notValidBeforeLeeway != null)
             claims.put("nbf", now - options.notValidBeforeLeeway);
         if (options.isIssuedAt())
             claims.put("iat", now);
-        if (options.isJwtId())
-            claims.put("jti", UUID.randomUUID().toString());
     }
 
     private void enforceIntDate(Map<String, Object> claims, String claimName) {

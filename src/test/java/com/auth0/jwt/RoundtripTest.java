@@ -104,8 +104,8 @@ public class RoundtripTest {
 
         assertEquals(decoded.size(), 1);
         long iat = ((Number) decoded.get("iat")).longValue();
-        assertTrue(iat >= before / 1000l);
-        assertTrue(iat <= after / 1000l);
+        assertTrue(iat >= Math.round(before / 1000d));
+        assertTrue(iat <= Math.round(after / 1000d));
     }
 
     @Test
